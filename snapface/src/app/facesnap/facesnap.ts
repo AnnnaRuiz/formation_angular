@@ -1,42 +1,23 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FacesnapModel } from '../models/facesnap-model';
+import { FacesnapModel } from '../models/facesnap.model';
+import { TitleCasePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-facesnap',
-  imports: [],
+  imports: [
+    TitleCasePipe,
+  ],
   templateUrl: './facesnap.html',
   styleUrl: './facesnap.scss'
 })
 
-export class Facesnap implements OnInit {
-  @Input() facesnap!: FacesnapModel
+export class Facesnap {
+  @Input() facesnap!: FacesnapModel;
 
-  snapButtonText!: string;
-  userHasSnapped!: boolean;
+  constructor(private router: Router){}
 
-  ngOnInit(): void {
-    this.snapButtonText = 'Oh Snap!'
-    this.userHasSnapped = false;
-
-  }
-
-  onSnap() {
-    if (this.userHasSnapped){
-      this.unSnap();
-    } else {
-      this.snap();
-    }
-  }
-
-  unSnap(){
-    this.facesnap.removeSnap();
-    this.snapButtonText = 'Oh Snap!'
-    this.userHasSnapped = false;
-  }
-
-  snap(){
-    this.facesnap.addSnap();
-    this.snapButtonText = 'Oops, Unsnap!'
-    this.userHasSnapped = true;
+  onViewFacesnap(): void {
+    this.router.navigateByUrl(`facesnaps/${this.facesnap.id}`);
   }
 }
